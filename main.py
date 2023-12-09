@@ -22,30 +22,30 @@ HANGUL_CONSONANTS: list[str] = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ',
                                 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
 
 # 각자병서: ㄱ이 ㄲ보다 먼저이지만, 준세벌식 키보드에서는 초성에 된소리가 오는 것이 원래의 순서이기에 초성에 한해 처리해 주어야 함.
-GEMINATION_CLUSTERS: dict[str] = {"ㄲ": "ㄱ", "ㄸ": "ㄷ", "ㅃ": "ㅂ", "ㅆ": "ㅅ", "ㅉ": "ㅈ"}
+GEMINATION_CLUSTERS: dict[str, str] = {"ㄲ": "ㄱ", "ㄸ": "ㄷ", "ㅃ": "ㅂ", "ㅆ": "ㅅ", "ㅉ": "ㅈ"}
 # 합용병서자가 아닌 병서자라는 의미로 사용됨
-CONSONANT_CLUSTERS: dict[str] = {"ㄺ": "ㄱ", "ㄻ": "ㅁ", "ㄼ": "ㅂ", "ㄽ": "ㅅ",
+CONSONANT_CLUSTERS: dict[str, str] = {"ㄺ": "ㄱ", "ㄻ": "ㅁ", "ㄼ": "ㅂ", "ㄽ": "ㅅ",
                                  "ㄾ": "ㅌ", "ㄿ": "ㅍ", "ㅀ": "ㅎ", "ㄳ": "ㅅ",
                                  "ㄵ": "ㅈ", "ㄶ": "ㅎ", "ㅄ": "ㅂ"}
 
 
-def cut_out(target_list: list[any], index: int) -> list[any]:
+def cut_out(target_list: list, index: int) -> list:
     """주어진 리스트에서 한 요소를 제외한 요소를 리턴합니다
 
     Args:
-        target_list (list[any]): 대상 리스트
+        target_list (list[Any]): 대상 리스트
         index (int): 삭제할 요소의 index
 
     Returns:
-        list[any]: 요소가 삭제된 리스트
+        list[Any]: 요소가 삭제된 리스트
     """
     # if len(target_list)-1 < index: return target_list
     return target_list[:index] + target_list[index+1:]
 
 
-counter_letter = 0  # 받침이 있는 글자의 수
-counter_same = 0  # 초성과 종성이 같은 글자의 수
-counter_reverse = 0  # 초성과 종성이 역가나다순인 글자의 수
+counter_letter: int = 0  # 받침이 있는 글자의 수
+counter_same: int = 0  # 초성과 종성이 같은 글자의 수
+counter_reverse: int = 0  # 초성과 종성이 역가나다순인 글자의 수
 
 print("Frequency Counter is Now Started")
 for letter in tqdm(CONVERSATION_DATA):
@@ -54,7 +54,7 @@ for letter in tqdm(CONVERSATION_DATA):
         continue
 
     # 받침이 존재하는 글자에 한해서 실행
-    consonants = cut_out(list(decompose(letter)), 1)  # 초성과 종성만 변수로 로드
+    consonants:list[str] = cut_out(list(decompose(letter)), 1)  # 초성과 종성만 변수로 로드
 
     # 초성자가 각자병서자일 시 병서자가 아닌 자음으로 교체
     consonants[0] = GEMINATION_CLUSTERS.get(consonants[0], consonants[0])
