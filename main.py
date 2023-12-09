@@ -18,8 +18,8 @@ with open('./data/ko_dataset_2.json', 'r', encoding="UTF8") as datas:
 print(f"Complete.\nThe length of data is {len(CONVERSATION_DATA)}")
 
 # 한글 자음
-HANGUL_CONSONANTS: list[str] = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ',
-                                'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
+HANGUL_CONSONANTS: list[str] = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ',
+                                'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
 
 # 각자병서: ㄱ이 ㄲ보다 먼저이지만, 준세벌식 키보드에서는 초성에 된소리가 오는 것이 원래의 순서이기에 초성에 한해 처리해 주어야 함.
 GEMINATION_CLUSTERS: dict[str] = {"ㄲ": "ㄱ", "ㄸ": "ㄷ", "ㅃ": "ㅂ", "ㅆ": "ㅅ", "ㅉ": "ㅈ"}
@@ -54,7 +54,7 @@ for letter in tqdm(CONVERSATION_DATA):
         continue
 
     # 받침이 존재하는 글자에 한해서 실행
-    consonants = cut_out(list(decompose(letter)), 1)  # 초성과 중성만 변수로 로드
+    consonants = cut_out(list(decompose(letter)), 1)  # 초성과 종성만 변수로 로드
 
     # 초성자가 각자병서자일 시 병서자가 아닌 자음으로 교체
     consonants[0] = GEMINATION_CLUSTERS.get(consonants[0], consonants[0])
