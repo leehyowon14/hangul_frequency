@@ -21,12 +21,11 @@ print(f"Complete.\nThe length of data is {len(CONVERSATION_DATA)}")
 HANGUL_CONSONANTS: list[str] = ['ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ',
                                 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ']
 
-# 각자병서: ㄱ이 ㄲ보다 먼저이지만, 준세벌식 키보드에서는 초성에 된소리가 오는 것이 원래의 순서이기에 처리해 주어야 함.
+# 각자병서: ㄱ이 ㄲ보다 먼저이지만, 준세벌식 키보드에서는 초성에 된소리가 오는 것이 원래의 순서이기에 초성에 한해 처리해 주어야 함.
 GEMINATION_CLUSTERS: dict[str] = {"ㄲ": "ㄱ", "ㄸ": "ㄷ", "ㅃ": "ㅂ", "ㅆ": "ㅅ", "ㅉ": "ㅈ"}
-# 합용병서
+# 합용병서자가 아닌 병서자라는 의미로 사용됨
 CONSONANT_CLUSTERS: dict[str] = {"ㄺ": "ㄱ", "ㄻ": "ㅁ", "ㄼ": "ㅂ", "ㄽ": "ㅅ",
                                  "ㄾ": "ㅌ", "ㄿ": "ㅍ", "ㅀ": "ㅎ", "ㄳ": "ㅅ", "ㄵ": "ㅈ", "ㄶ": "ㅎ", "ㅄ": "ㅂ"}
-# 각자병서 합용병서 영문명 출처: https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId=ART001922436
 
 
 def cut_out(target_list: list[any], index: int) -> list[any]:
@@ -55,12 +54,6 @@ for letter in tqdm(CONVERSATION_DATA):
 
     # 받침이 존재하는 글자에 한해서 실행
     consonants = cut_out(list(decompose(letter)), 1)  # 초성과 중성만 변수로 로드
-
-    # 초성과 종성이 동일한 각자병서일 시, 74번 줄 주석 참고
-    if consonants[0] == consonants[1]:
-        counter_letter += 1
-        counter_same += 1
-        continue
 
     # 초성자가 각자병서자일 시 병서자가 아닌 자음으로 교체
     consonants[0] = GEMINATION_CLUSTERS.get(consonants[0], consonants[0])
