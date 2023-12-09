@@ -56,7 +56,7 @@ for letter in tqdm(CONVERSATION_DATA):
     # 받침이 존재하는 글자에 한해서 실행
     consonants = cut_out(list(decompose(letter)), 1)  # 초성과 중성만 변수로 로드
 
-    # 초성과 종성이 동일한 각자병서일 시, 75번 줄 주석 참고
+    # 초성과 종성이 동일한 각자병서일 시, 74번 줄 주석 참고
     if consonants[0] == consonants[1]:
         counter_letter += 1
         counter_same += 1
