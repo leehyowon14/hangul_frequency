@@ -6,6 +6,13 @@
 
 data 폴더에 [여기](https://huggingface.co/datasets/junelee/sharegpt_deepl_ko)에서 다운로드 받은 "ko_dataset_2.json"파일을 넣고 실행하시면 됩니다.
 
-결과: 업데이트 예정
+결과:
+```
+데이터셋 총 길이: 142434166
+받침이 있는 글자 수 : 62256958
+받침이 같은 글자 수 : 8663505
+받침이 역가나다순인 글자 수 : 40859974
+받침이 가나다순인 글자 수 : 12733479
+```
 ---
 Developed by. leehyowon14.
