@@ -70,13 +70,12 @@ for data in tqdm(load(datas)):  # CONVERSATION_DATA에 대화 데이터 추가
             counter_reverse += 1
         elif len(set(consonants)) == 1:
             counter_same += 1
-        
 
 datas.close()
+print(f"Complete.\nThe length of data is {counter_total}")
 
 # 분석 완료 후 출력
 print("\n\n---Final Result---")
-print(f"Complete.\nThe length of data is {counter_total}")
 print(f"letter : {counter_letter}")
 print(f"same : {counter_same}")
 print(f"reversed : {counter_reverse}")
