@@ -13,7 +13,7 @@ with open('./data/ko_dataset_2.json', 'r', encoding="UTF8") as datas:
 
     # 받침자를 가진 한글을 제외한 모든 문자 제거.
     print("Filtering is started.")
-    CONVERSATION_DATA = regex_replace('[^각-힣]', '', CONVERSATION_DATA[0])
+    CONVERSATION_DATA = regex_replace('[^각-힣]', '', CONVERSATION_DATA)
 
 print(f"Complete.\nThe length of data is {len(CONVERSATION_DATA)}")
 
