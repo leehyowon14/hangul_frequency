@@ -35,43 +35,40 @@ def cut_out(target_list: list, index: int) -> list:
     # if len(target_list)-1 < index: return target_list
     return target_list[:index] + target_list[index+1:]
 
-datas =  open('./data/ko_dataset_2.json', 'r', encoding="UTF8")
-for data in tqdm(load(datas)):  # CONVERSATION_DATA에 대화 데이터 추가
-    conversation_data: str = ''
-    for conversation in data["conversations"]:
-        conversation_data += conversation["value"]
-    
-    conversation_data = regex_replace('[^각-힣]', '', conversation_data)
+with open('./data/ko_dataset_2.json', 'r', encoding="UTF8") as datas:
+    for data in tqdm(load(datas)):  # CONVERSATION_DATA에 대화 데이터 추가
+        conversation_data: str = ''.join(
+            conversation["value"] for conversation in data["conversations"]
+        )
+        conversation_data = regex_replace('[^각-힣]', '', conversation_data)
 
-    for letter in conversation_data:
-        counter_total += 1
-        # 받침 없을 시 다음 루프로
-        if not has_batchim(letter):
-            continue
+        for letter in conversation_data:
+            counter_total += 1
+            # 받침 없을 시 다음 루프로
+            if not has_batchim(letter):
+                continue
 
-        # 받침이 존재하는 글자에 한해서 실행
-        consonants:list[str] = cut_out(list(decompose(letter)), 1)  # 초성과 종성만 변수로 로드
+            # 받침이 존재하는 글자에 한해서 실행
+            consonants:list[str] = cut_out(list(decompose(letter)), 1)  # 초성과 종성만 변수로 로드
 
-        # 초성자가 각자병서자일 시 병서자가 아닌 자음으로 교체
-        consonants[0] = GEMINATION_CLUSTERS.get(consonants[0], consonants[0])
+            # 초성자가 각자병서자일 시 병서자가 아닌 자음으로 교체
+            consonants[0] = GEMINATION_CLUSTERS.get(consonants[0], consonants[0])
 
-        # ㄲ, ㅆ 받침 예외처리 (각각 키가 할당되어 있기에 순서의 영향을 받지 않음.)
-        if (consonants[1] == "ㄲ" or
-            consonants[1] == "ㅆ"):
-            continue
+                    # ㄲ, ㅆ 받침 예외처리 (각각 키가 할당되어 있기에 순서의 영향을 받지 않음.)
+            if consonants[1] in ["ㄲ", "ㅆ"]:
+                continue
 
-        # 종성자가 합용병서자일 시 병서자가 아닌 자음으로 교체.
-        # 준세벌식 키보드에서 종성자는 초성과 종성이 동일한 경우를 제외하고 'ㄲ'이나 'ㅆ'이 아닌 각자병서자일 수 없음.
-        consonants[1] = CONSONANT_CLUSTERS.get(consonants[1], consonants[1])
+            # 종성자가 합용병서자일 시 병서자가 아닌 자음으로 교체.
+            # 준세벌식 키보드에서 종성자는 초성과 종성이 동일한 경우를 제외하고 'ㄲ'이나 'ㅆ'이 아닌 각자병서자일 수 없음.
+            consonants[1] = CONSONANT_CLUSTERS.get(consonants[1], consonants[1])
 
-        # 카운트
-        counter_letter += 1
-        if consonants != sorted(consonants):
-            counter_reverse += 1
-        elif len(set(consonants)) == 1:
-            counter_same += 1
+            # 카운트
+            counter_letter += 1
+            if consonants != sorted(consonants):
+                counter_reverse += 1
+            elif len(set(consonants)) == 1:
+                counter_same += 1
 
-datas.close()
 print(f"Complete.\nThe length of data is {counter_total}")
 
 # 분석 완료 후 출력
